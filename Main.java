@@ -41,6 +41,7 @@ public class Main extends Application {
 
         // tworzenie przycisku "Search"
         Button searchButton = new Button("Search");
+        searchButton.setOnAction(e -> searchFiles());
 
         // układ HBox z polem tekstowym i przyciskiem "Browse"
         HBox hBox = new HBox(10, directoryPathField, browseButton);
@@ -62,6 +63,39 @@ public class Main extends Application {
         // sprawdzenie czy użytkownik wybrał katalog
         if (selectedDirectory != null) {
             directoryPathField.setText(selectedDirectory.getAbsolutePath());
+        }
+    }
+
+    // metoda do przeszukiwania plików
+    private void searchFiles() {
+        String directoryPath = directoryPathField.getText();
+        if (directoryPath.isEmpty()) {
+            resultArea.setText("Please provide a directory path.");
+            return;
+        }
+
+        File directory = new File(directoryPath);
+        if (!directory.isDirectory()) {
+            resultArea.setText("The provided path is not a directory.");
+            return;
+        }
+
+        StringBuilder results = new StringBuilder();
+        listFilesInDirectory(directory, results);
+        resultArea.setText(results.toString());
+    }
+
+    // metoda do listowania plików w katalogu
+    private void listFilesInDirectory(File directory, StringBuilder results) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    results.append(file.getAbsolutePath()).append("\n");
+                } else if (file.isDirectory()) {
+                    listFilesInDirectory(file, results);
+                }
+            }
         }
     }
 }
