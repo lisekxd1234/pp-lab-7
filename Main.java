@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -12,6 +13,7 @@ import java.io.File;
 public class Main extends Application {
     private TextField directoryPathField;
     private TextField searchField;
+    private TextArea resultArea;
 
     public static void main(String[] args) {
         launch(args);
@@ -29,6 +31,10 @@ public class Main extends Application {
         searchField = new TextField();
         searchField.setPromptText("Enter search phrase");
 
+        // tworzenie pola tekstowego do wyświetlania wyników
+        resultArea = new TextArea();
+        resultArea.setPrefHeight(400);
+
         // tworzenie przycisku "Browse"
         Button browseButton = new Button("Browse");
         browseButton.setOnAction(e -> browseDirectory());
@@ -39,11 +45,11 @@ public class Main extends Application {
         // układ HBox z polem tekstowym i przyciskiem "Browse"
         HBox hBox = new HBox(10, directoryPathField, browseButton);
 
-        // układ VBox z HBox, polem tekstowym i przyciskiem "Search"
-        VBox vBox = new VBox(10, hBox, searchField, searchButton);
+        // układ VBox z HBox, polem tekstowym, przyciskiem "Search" i polem wyników
+        VBox vBox = new VBox(10, hBox, searchField, searchButton, resultArea);
 
         // tworzenie sceny i ustawienie jej w primaryStage
-        Scene scene = new Scene(vBox, 600, 200);
+        Scene scene = new Scene(vBox, 600, 600); // zwiększenie wysokości sceny
         primaryStage.setScene(scene);
         primaryStage.show();
     }
